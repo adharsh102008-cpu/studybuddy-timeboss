@@ -14,7 +14,200 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      pomodoro_sessions: {
+        Row: {
+          completed_at: string
+          id: string
+          minutes: number
+          task_id: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          minutes: number
+          task_id?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          minutes?: number
+          task_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pomodoro_sessions_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prep_items: {
+        Row: {
+          created_at: string
+          id: string
+          item: string
+          prep_date: string
+          prepared: boolean
+          subject: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          item: string
+          prep_date: string
+          prepared?: boolean
+          subject: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          item?: string
+          prep_date?: string
+          prepared?: boolean
+          subject?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          focus_minutes: number
+          id: string
+          long_break_minutes: number
+          name: string
+          notification_sound: string
+          onboarded: boolean
+          preferred_study_times: string
+          sessions_before_long_break: number
+          short_break_minutes: number
+          student_type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          focus_minutes?: number
+          id: string
+          long_break_minutes?: number
+          name?: string
+          notification_sound?: string
+          onboarded?: boolean
+          preferred_study_times?: string
+          sessions_before_long_break?: number
+          short_break_minutes?: number
+          student_type?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          focus_minutes?: number
+          id?: string
+          long_break_minutes?: number
+          name?: string
+          notification_sound?: string
+          onboarded?: boolean
+          preferred_study_times?: string
+          sessions_before_long_break?: number
+          short_break_minutes?: number
+          student_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tasks: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          description: string
+          due_date: string | null
+          due_time: string | null
+          estimated_minutes: number
+          id: string
+          kind: string
+          priority: string
+          reminder_at: string | null
+          status: string
+          subject: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          description?: string
+          due_date?: string | null
+          due_time?: string | null
+          estimated_minutes?: number
+          id?: string
+          kind?: string
+          priority?: string
+          reminder_at?: string | null
+          status?: string
+          subject?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          description?: string
+          due_date?: string | null
+          due_time?: string | null
+          estimated_minutes?: number
+          id?: string
+          kind?: string
+          priority?: string
+          reminder_at?: string | null
+          status?: string
+          subject?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      timetable_entries: {
+        Row: {
+          created_at: string
+          day_of_week: number
+          end_time: string
+          id: string
+          period: number
+          start_time: string
+          subject: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          day_of_week: number
+          end_time: string
+          id?: string
+          period?: number
+          start_time: string
+          subject: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          day_of_week?: number
+          end_time?: string
+          id?: string
+          period?: number
+          start_time?: string
+          subject?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
