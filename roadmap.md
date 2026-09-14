@@ -2,7 +2,7 @@
 
 ## Current
 - [x] Fix Focus Preferences duration inputs (string state, validate on save)
-- [ ] Fix remaining typecheck errors: TaskForm disabled, task title insert type, create /focus/$taskId Pomodoro route
+- [x] Fix remaining typecheck errors: TaskForm disabled, task title insert type, create /focus/$taskId Pomodoro route
 
 ## In progress
 - [ ] Home page: phone-app mockup (380×667 frame) per detailed spec — status bar, auto date/greeting, avatar, 2 progress bars, Today's Subjects list, 5-button colored bottom nav
