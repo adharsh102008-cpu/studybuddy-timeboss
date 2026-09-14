@@ -40,10 +40,10 @@ function ProfileScreen() {
     name: "",
     student_type: "",
     preferred_study_times: "",
-    focus_minutes: 25,
-    short_break_minutes: 5,
-    long_break_minutes: 15,
-    sessions_before_long_break: 4,
+    focus_minutes: "25",
+    short_break_minutes: "5",
+    long_break_minutes: "15",
+    sessions_before_long_break: "4",
     notification_sound: "chime",
   });
 
@@ -53,13 +53,48 @@ function ProfileScreen() {
       name: profile.name ?? "",
       student_type: profile.student_type ?? "",
       preferred_study_times: profile.preferred_study_times ?? "",
-      focus_minutes: profile.focus_minutes ?? 25,
-      short_break_minutes: profile.short_break_minutes ?? 5,
-      long_break_minutes: profile.long_break_minutes ?? 15,
-      sessions_before_long_break: profile.sessions_before_long_break ?? 4,
+      focus_minutes: String(profile.focus_minutes ?? 25),
+      short_break_minutes: String(profile.short_break_minutes ?? 5),
+      long_break_minutes: String(profile.long_break_minutes ?? 15),
+      sessions_before_long_break: String(profile.sessions_before_long_break ?? 4),
       notification_sound: profile.notification_sound ?? "chime",
     });
   }, [profile]);
+
+  function parseMinutes(raw: string, min: number, max: number): number | null {
+    const trimmed = raw.trim();
+    if (!trimmed) return null;
+    const n = Number(trimmed);
+    if (!Number.isFinite(n) || !Number.isInteger(n) || n < min || n > max) return null;
+    return n;
+  }
+
+  function save() {
+    const focus = parseMinutes(form.focus_minutes, 5, 120);
+    const shortBreak = parseMinutes(form.short_break_minutes, 1, 30);
+    const longBreak = parseMinutes(form.long_break_minutes, 5, 60);
+    const sessionsBefore = parseMinutes(form.sessions_before_long_break, 2, 8);
+    if (focus === null || shortBreak === null || longBreak === null || sessionsBefore === null) {
+      toast.error("Please enter valid numbers for your focus preferences.");
+      return;
+    }
+    update.mutate(
+      {
+        name: form.name,
+        student_type: form.student_type,
+        preferred_study_times: form.preferred_study_times,
+        notification_sound: form.notification_sound,
+        focus_minutes: focus,
+        short_break_minutes: shortBreak,
+        long_break_minutes: longBreak,
+        sessions_before_long_break: sessionsBefore,
+      },
+      {
+        onSuccess: () => toast.success("Saved"),
+        onError: () => toast.error("Could not save your settings."),
+      },
+    );
+  }
 
   const totalMinutes = sessions.reduce((s, x) => s + x.minutes, 0);
 
