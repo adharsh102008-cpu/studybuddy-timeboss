@@ -229,7 +229,7 @@ export function useTasks() {
 export function useCreateTask() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (task: Partial<Task>) => {
+    mutationFn: async (task: Partial<Task> & { title: string }) => {
       const id = await uid();
       if (!id) throw new Error("Not signed in");
       const { data, error } = await supabase

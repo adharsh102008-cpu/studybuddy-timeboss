@@ -151,7 +151,7 @@ export function TaskForm({
 
       {error ? <p className="text-[12px] font-medium text-[#ef4444]">{error}</p> : null}
 
-      <PrimaryButton onClick={submit} disabled={busy}>
+      <PrimaryButton onClick={submit} disabled={busy ?? false}>
         {submitLabel}
       </PrimaryButton>
     </div>

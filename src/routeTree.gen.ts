@@ -20,6 +20,7 @@ import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedProgressRouteImport } from './routes/_authenticated/progress'
 import { Route as AuthenticatedReadinessRouteImport } from './routes/_authenticated/readiness'
 import { Route as AuthenticatedTimetableRouteImport } from './routes/_authenticated/timetable'
+import { Route as AuthenticatedFocusTaskIdRouteImport } from './routes/_authenticated/focus.$taskId'
 import { Route as AuthenticatedSubjectEntryIdRouteImport } from './routes/_authenticated/subject.$entryId'
 import { Route as AuthenticatedTaskTaskIdRouteImport } from './routes/_authenticated/task.$taskId'
 
@@ -77,6 +78,12 @@ const AuthenticatedTimetableRoute = AuthenticatedTimetableRouteImport.update({
   path: '/timetable',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedFocusTaskIdRoute =
+  AuthenticatedFocusTaskIdRouteImport.update({
+    id: '/focus/$taskId',
+    path: '/focus/$taskId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSubjectEntryIdRoute =
   AuthenticatedSubjectEntryIdRouteImport.update({
     id: '/subject/$entryId',
@@ -100,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/progress': typeof AuthenticatedProgressRoute
   '/readiness': typeof AuthenticatedReadinessRoute
   '/timetable': typeof AuthenticatedTimetableRoute
+  '/focus/$taskId': typeof AuthenticatedFocusTaskIdRoute
   '/subject/$entryId': typeof AuthenticatedSubjectEntryIdRoute
   '/task/$taskId': typeof AuthenticatedTaskTaskIdRoute
 }
@@ -114,6 +122,7 @@ export interface FileRoutesByTo {
   '/progress': typeof AuthenticatedProgressRoute
   '/readiness': typeof AuthenticatedReadinessRoute
   '/timetable': typeof AuthenticatedTimetableRoute
+  '/focus/$taskId': typeof AuthenticatedFocusTaskIdRoute
   '/subject/$entryId': typeof AuthenticatedSubjectEntryIdRoute
   '/task/$taskId': typeof AuthenticatedTaskTaskIdRoute
 }
@@ -130,6 +139,7 @@ export interface FileRoutesById {
   '/_authenticated/progress': typeof AuthenticatedProgressRoute
   '/_authenticated/readiness': typeof AuthenticatedReadinessRoute
   '/_authenticated/timetable': typeof AuthenticatedTimetableRoute
+  '/_authenticated/focus/$taskId': typeof AuthenticatedFocusTaskIdRoute
   '/_authenticated/subject/$entryId': typeof AuthenticatedSubjectEntryIdRoute
   '/_authenticated/task/$taskId': typeof AuthenticatedTaskTaskIdRoute
 }
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
     | '/progress'
     | '/readiness'
     | '/timetable'
+    | '/focus/$taskId'
     | '/subject/$entryId'
     | '/task/$taskId'
   fileRoutesByTo: FileRoutesByTo
@@ -160,6 +171,7 @@ export interface FileRouteTypes {
     | '/progress'
     | '/readiness'
     | '/timetable'
+    | '/focus/$taskId'
     | '/subject/$entryId'
     | '/task/$taskId'
   id:
@@ -175,6 +187,7 @@ export interface FileRouteTypes {
     | '/_authenticated/progress'
     | '/_authenticated/readiness'
     | '/_authenticated/timetable'
+    | '/_authenticated/focus/$taskId'
     | '/_authenticated/subject/$entryId'
     | '/_authenticated/task/$taskId'
   fileRoutesById: FileRoutesById
@@ -264,6 +277,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTimetableRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/focus/$taskId': {
+      id: '/_authenticated/focus/$taskId'
+      path: '/focus/$taskId'
+      fullPath: '/focus/$taskId'
+      preLoaderRoute: typeof AuthenticatedFocusTaskIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/subject/$entryId': {
       id: '/_authenticated/subject/$entryId'
       path: '/subject/$entryId'
@@ -290,6 +310,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProgressRoute: typeof AuthenticatedProgressRoute
   AuthenticatedReadinessRoute: typeof AuthenticatedReadinessRoute
   AuthenticatedTimetableRoute: typeof AuthenticatedTimetableRoute
+  AuthenticatedFocusTaskIdRoute: typeof AuthenticatedFocusTaskIdRoute
   AuthenticatedSubjectEntryIdRoute: typeof AuthenticatedSubjectEntryIdRoute
   AuthenticatedTaskTaskIdRoute: typeof AuthenticatedTaskTaskIdRoute
 }
@@ -303,6 +324,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedProgressRoute: AuthenticatedProgressRoute,
   AuthenticatedReadinessRoute: AuthenticatedReadinessRoute,
   AuthenticatedTimetableRoute: AuthenticatedTimetableRoute,
+  AuthenticatedFocusTaskIdRoute: AuthenticatedFocusTaskIdRoute,
   AuthenticatedSubjectEntryIdRoute: AuthenticatedSubjectEntryIdRoute,
   AuthenticatedTaskTaskIdRoute: AuthenticatedTaskTaskIdRoute,
 }
