@@ -155,9 +155,7 @@ function ProfileScreen() {
                 min={5}
                 max={120}
                 value={form.focus_minutes}
-                onChange={(e) =>
-                  setForm({ ...form, focus_minutes: Number(e.target.value) || 25 })
-                }
+                onChange={(e) => setForm({ ...form, focus_minutes: e.target.value })}
               />
             </label>
             <label className="text-[11px] font-medium text-neutral-500">
@@ -168,9 +166,7 @@ function ProfileScreen() {
                 min={1}
                 max={30}
                 value={form.short_break_minutes}
-                onChange={(e) =>
-                  setForm({ ...form, short_break_minutes: Number(e.target.value) || 5 })
-                }
+                onChange={(e) => setForm({ ...form, short_break_minutes: e.target.value })}
               />
             </label>
             <label className="text-[11px] font-medium text-neutral-500">
@@ -181,9 +177,7 @@ function ProfileScreen() {
                 min={5}
                 max={60}
                 value={form.long_break_minutes}
-                onChange={(e) =>
-                  setForm({ ...form, long_break_minutes: Number(e.target.value) || 15 })
-                }
+                onChange={(e) => setForm({ ...form, long_break_minutes: e.target.value })}
               />
             </label>
             <label className="text-[11px] font-medium text-neutral-500">
@@ -195,10 +189,7 @@ function ProfileScreen() {
                 max={8}
                 value={form.sessions_before_long_break}
                 onChange={(e) =>
-                  setForm({
-                    ...form,
-                    sessions_before_long_break: Number(e.target.value) || 4,
-                  })
+                  setForm({ ...form, sessions_before_long_break: e.target.value })
                 }
               />
             </label>
@@ -231,15 +222,7 @@ function ProfileScreen() {
             Enable notifications
           </button>
 
-          <PrimaryButton
-            disabled={update.isPending}
-            onClick={() =>
-              update.mutate(form, {
-                onSuccess: () => toast.success("Saved"),
-                onError: () => toast.error("Could not save your settings."),
-              })
-            }
-          >
+          <PrimaryButton disabled={update.isPending} onClick={save}>
             Save changes
           </PrimaryButton>
 
