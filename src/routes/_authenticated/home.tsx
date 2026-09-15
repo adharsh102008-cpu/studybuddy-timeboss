@@ -1,6 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ChevronRight, ListTodo } from "lucide-react";
+import { useEffect, useState } from "react";
 import { PhoneFrame, useNow } from "@/components/PhoneFrame";
+import { CelebrationModal } from "@/components/CelebrationModal";
 import {
   fmt12,
   progressForToday,
@@ -84,6 +86,21 @@ function HomeScreen() {
   const todaysPeriods = timetable
     .filter((e) => e.day_of_week === now.getDay())
     .sort((a, b) => a.start_time.localeCompare(b.start_time));
+
+  const [celebrate, setCelebrate] = useState(false);
+  const allDone = progress.list.length > 0 && progress.remaining.length === 0;
+
+  useEffect(() => {
+    if (!allDone) return;
+    const key = "studyflow-celebrated";
+    try {
+      if (window.localStorage.getItem(key) === todayISO()) return;
+      window.localStorage.setItem(key, todayISO());
+    } catch {
+      /* ignore */
+    }
+    setCelebrate(true);
+  }, [allDone]);
 
   const dateText = now.toLocaleDateString("en-US", {
     weekday: "long",
@@ -212,6 +229,18 @@ function HomeScreen() {
           ) : null}
         </section>
       </main>
+
+      {celebrate ? (
+        <CelebrationModal
+          completionPercent={progress.percent}
+          readinessPercent={readiness.score}
+          onDone={() => setCelebrate(false)}
+          onViewProgress={() => {
+            setCelebrate(false);
+            navigate({ to: "/progress" });
+          }}
+        />
+      ) : null}
     </PhoneFrame>
   );
 }

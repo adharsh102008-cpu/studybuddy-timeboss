@@ -6,6 +6,7 @@ import { PhoneFrame, ScreenHeader, PrimaryButton, inputClass } from "@/component
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile, useSessions, useUpdateProfile } from "@/lib/data";
 import { ensureNotificationPermission } from "@/lib/notify";
+import { useTheme } from "@/lib/theme";
 
 export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({
@@ -35,6 +36,7 @@ function ProfileScreen() {
   const { data: profile } = useProfile();
   const { data: sessions = [] } = useSessions();
   const update = useUpdateProfile();
+  const { isDark, setTheme } = useTheme();
 
   const [form, setForm] = useState({
     name: "",
@@ -207,6 +209,30 @@ function ProfileScreen() {
                 ))}
               </select>
             </label>
+          </div>
+
+          <p className="mt-2 text-[13px] font-bold text-neutral-900">Appearance</p>
+          <div className="flex items-center justify-between rounded-xl bg-[#f0f0f0] px-4 py-3">
+            <div>
+              <p className="text-[13px] font-semibold text-neutral-900">Dark Mode</p>
+              <p className="text-[11px] text-neutral-500">
+                {isDark ? "Dark theme is on" : "Light theme is on"}
+              </p>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={isDark}
+              aria-label="Dark Mode"
+              onClick={() => setTheme(isDark ? "light" : "dark")}
+              className="relative h-7 w-12 shrink-0 rounded-full transition-colors duration-200"
+              style={{ backgroundColor: isDark ? "#3b82f6" : "#cbd5e1" }}
+            >
+              <span
+                className="absolute top-1 size-5 rounded-full bg-white transition-all duration-200"
+                style={{ left: isDark ? "26px" : "4px" }}
+              />
+            </button>
           </div>
 
           <button

@@ -1,6 +1,94 @@
 import { Trash2, Plus } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { DAYS, type TimetableEntry } from "@/lib/data";
 import { inputClass } from "@/components/PhoneFrame";
+
+/** Time field that keeps its own buffer so digits can be cleared/retyped freely. */
+function TimeField({
+  value,
+  onCommit,
+  className,
+}: {
+  value: string;
+  onCommit: (v: string) => void;
+  className: string;
+}) {
+  const [text, setText] = useState(value);
+  const focused = useRef(false);
+
+  useEffect(() => {
+    if (!focused.current) setText(value);
+  }, [value]);
+
+  return (
+    <input
+      className={className}
+      type="time"
+      value={text}
+      onFocus={() => {
+        focused.current = true;
+      }}
+      onChange={(e) => {
+        setText(e.target.value);
+        if (e.target.value) onCommit(e.target.value);
+      }}
+      onBlur={() => {
+        focused.current = false;
+        if (!text) setText(value);
+        else onCommit(text);
+      }}
+    />
+  );
+}
+
+/** Number field that allows the input to be emptied while typing. */
+function NumberField({
+  value,
+  onCommit,
+  className,
+  min,
+  max,
+  fallback,
+}: {
+  value: number;
+  onCommit: (v: number) => void;
+  className: string;
+  min: number;
+  max: number;
+  fallback: number;
+}) {
+  const [text, setText] = useState(String(value));
+  const focused = useRef(false);
+
+  useEffect(() => {
+    if (!focused.current) setText(String(value));
+  }, [value]);
+
+  return (
+    <input
+      className={className}
+      type="number"
+      min={min}
+      max={max}
+      value={text}
+      onFocus={() => {
+        focused.current = true;
+      }}
+      onChange={(e) => {
+        setText(e.target.value);
+        const n = Number(e.target.value);
+        if (e.target.value.trim() !== "" && Number.isFinite(n)) onCommit(n);
+      }}
+      onBlur={() => {
+        focused.current = false;
+        const n = Number(text);
+        const next = text.trim() === "" || !Number.isFinite(n) ? fallback : n;
+        setText(String(next));
+        onCommit(next);
+      }}
+    />
+  );
+}
 
 export type DraftRow = Omit<TimetableEntry, "id" | "user_id">;
 
@@ -62,31 +150,29 @@ export function TimetableEditor({
           <div className="mt-2 grid grid-cols-3 gap-2">
             <label className="text-[11px] font-medium text-neutral-500">
               Period
-              <input
+              <NumberField
                 className={`${inputClass} mt-1 bg-white`}
-                type="number"
                 min={1}
                 max={20}
+                fallback={1}
                 value={row.period}
-                onChange={(e) => update(i, { period: Number(e.target.value) || 1 })}
+                onCommit={(v) => update(i, { period: v })}
               />
             </label>
             <label className="text-[11px] font-medium text-neutral-500">
               Start
-              <input
+              <TimeField
                 className={`${inputClass} mt-1 bg-white`}
-                type="time"
                 value={row.start_time}
-                onChange={(e) => update(i, { start_time: e.target.value })}
+                onCommit={(v) => update(i, { start_time: v })}
               />
             </label>
             <label className="text-[11px] font-medium text-neutral-500">
               End
-              <input
+              <TimeField
                 className={`${inputClass} mt-1 bg-white`}
-                type="time"
                 value={row.end_time}
-                onChange={(e) => update(i, { end_time: e.target.value })}
+                onCommit={(v) => update(i, { end_time: v })}
               />
             </label>
           </div>
