@@ -150,31 +150,29 @@ export function TimetableEditor({
           <div className="mt-2 grid grid-cols-3 gap-2">
             <label className="text-[11px] font-medium text-neutral-500">
               Period
-              <input
+              <NumberField
                 className={`${inputClass} mt-1 bg-white`}
-                type="number"
                 min={1}
                 max={20}
+                fallback={1}
                 value={row.period}
-                onChange={(e) => update(i, { period: Number(e.target.value) || 1 })}
+                onCommit={(v) => update(i, { period: v })}
               />
             </label>
             <label className="text-[11px] font-medium text-neutral-500">
               Start
-              <input
+              <TimeField
                 className={`${inputClass} mt-1 bg-white`}
-                type="time"
                 value={row.start_time}
-                onChange={(e) => update(i, { start_time: e.target.value })}
+                onCommit={(v) => update(i, { start_time: v })}
               />
             </label>
             <label className="text-[11px] font-medium text-neutral-500">
               End
-              <input
+              <TimeField
                 className={`${inputClass} mt-1 bg-white`}
-                type="time"
                 value={row.end_time}
-                onChange={(e) => update(i, { end_time: e.target.value })}
+                onCommit={(v) => update(i, { end_time: v })}
               />
             </label>
           </div>
