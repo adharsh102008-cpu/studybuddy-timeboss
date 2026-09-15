@@ -229,6 +229,18 @@ function HomeScreen() {
           ) : null}
         </section>
       </main>
+
+      {celebrate ? (
+        <CelebrationModal
+          completionPercent={progress.percent}
+          readinessPercent={readiness.score}
+          onDone={() => setCelebrate(false)}
+          onViewProgress={() => {
+            setCelebrate(false);
+            navigate({ to: "/progress" });
+          }}
+        />
+      ) : null}
     </PhoneFrame>
   );
 }
