@@ -6,6 +6,7 @@ import { PhoneFrame, ScreenHeader, PrimaryButton, inputClass } from "@/component
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile, useSessions, useUpdateProfile } from "@/lib/data";
 import { ensureNotificationPermission } from "@/lib/notify";
+import { useTheme } from "@/lib/theme";
 
 export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({
@@ -35,6 +36,7 @@ function ProfileScreen() {
   const { data: profile } = useProfile();
   const { data: sessions = [] } = useSessions();
   const update = useUpdateProfile();
+  const { isDark, setTheme } = useTheme();
 
   const [form, setForm] = useState({
     name: "",
