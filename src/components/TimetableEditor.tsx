@@ -1,6 +1,94 @@
 import { Trash2, Plus } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { DAYS, type TimetableEntry } from "@/lib/data";
 import { inputClass } from "@/components/PhoneFrame";
+
+/** Time field that keeps its own buffer so digits can be cleared/retyped freely. */
+function TimeField({
+  value,
+  onCommit,
+  className,
+}: {
+  value: string;
+  onCommit: (v: string) => void;
+  className: string;
+}) {
+  const [text, setText] = useState(value);
+  const focused = useRef(false);
+
+  useEffect(() => {
+    if (!focused.current) setText(value);
+  }, [value]);
+
+  return (
+    <input
+      className={className}
+      type="time"
+      value={text}
+      onFocus={() => {
+        focused.current = true;
+      }}
+      onChange={(e) => {
+        setText(e.target.value);
+        if (e.target.value) onCommit(e.target.value);
+      }}
+      onBlur={() => {
+        focused.current = false;
+        if (!text) setText(value);
+        else onCommit(text);
+      }}
+    />
+  );
+}
+
+/** Number field that allows the input to be emptied while typing. */
+function NumberField({
+  value,
+  onCommit,
+  className,
+  min,
+  max,
+  fallback,
+}: {
+  value: number;
+  onCommit: (v: number) => void;
+  className: string;
+  min: number;
+  max: number;
+  fallback: number;
+}) {
+  const [text, setText] = useState(String(value));
+  const focused = useRef(false);
+
+  useEffect(() => {
+    if (!focused.current) setText(String(value));
+  }, [value]);
+
+  return (
+    <input
+      className={className}
+      type="number"
+      min={min}
+      max={max}
+      value={text}
+      onFocus={() => {
+        focused.current = true;
+      }}
+      onChange={(e) => {
+        setText(e.target.value);
+        const n = Number(e.target.value);
+        if (e.target.value.trim() !== "" && Number.isFinite(n)) onCommit(n);
+      }}
+      onBlur={() => {
+        focused.current = false;
+        const n = Number(text);
+        const next = text.trim() === "" || !Number.isFinite(n) ? fallback : n;
+        setText(String(next));
+        onCommit(next);
+      }}
+    />
+  );
+}
 
 export type DraftRow = Omit<TimetableEntry, "id" | "user_id">;
 
